@@ -49,6 +49,7 @@
             ">":       NextTrack,
             "p":       TogglePause,
             "<":       PreviousTrack,
+            "w": 	   SeekToStart,
             "f":       SeekForward,
             "z":       ToggleRepeat,
             "x":       ToggleRandom,
