@@ -28,7 +28,7 @@
         method: Auto,
         max_size_px: (width: 1200, height: 1200),
         disabled_protocols: ["http://", "https://"],
-        vertical_align: Top,
+        vertical_align: Center,
         horizontal_align: Center,
     ),
     keybinds: (
@@ -163,13 +163,13 @@
                 ),
                 (
                     size: "8",
-                    borders: "ALL",
-                    border_title: [(kind: Text(" Now Playing "), style: (fg: "rgb(126, 144, 172)"))],
-                    border_title_position: Top,
-                    border_title_alignment: Left,
                     pane: Split(direction: Horizontal, panes: [
                         (
-                            size: "16",
+                            size: "1",
+                            pane: Pane(Property(content: [])),
+                        ),
+                        (
+                            size: "20",
                             pane: Pane(AlbumArt),
                         ),
                         (
@@ -178,29 +178,42 @@
                         ),
                         (
                             size: "100%",
-                            pane: Split(direction: Vertical, panes: [
+                            borders: "ALL",
+                            border_title: [(kind: Text(" Now Playing "), style: (fg: "rgb(126, 144, 172)"))],
+                            border_title_position: Top,
+                            border_title_alignment: Left,
+                            pane: Split(direction: Horizontal, panes: [
                                 (
                                     size: "2",
                                     pane: Pane(Property(content: [])),
                                 ),
                                 (
-                                    size: "1",
-                                    pane: Pane(Property(content: [
-                                        ( kind: Property(Song(Title)), style: (fg: "rgb(235, 213, 121)", modifiers: "Bold") )
-                                    ], align: Center))
-                                ),
-                                (
-                                    size: "1",
-                                    pane: Pane(Property(content: [
-                                        ( kind: Property(Song(Artist)), style: (fg: "rgb(214, 119, 81)", modifiers: "Bold") ),
-                                        ( kind: Text(" - "), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") ),
-                                        ( kind: Property(Song(Album)), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") )
-                                    ], align: Center))
-                                ),
+                                    size: "100%",
+                                    pane: Split(direction: Vertical, panes: [
+                                        (
+                                            size: "2",
+                                            pane: Pane(Property(content: [])),
+                                        ),
+                                        (
+                                            size: "1",
+                                            pane: Pane(Property(content: [
+                                                ( kind: Property(Song(Title)), style: (fg: "rgb(235, 213, 121)", modifiers: "Bold") )
+                                            ], align: Center))
+                                        ),
+                                        (
+                                            size: "1",
+                                            pane: Pane(Property(content: [
+                                                ( kind: Property(Song(Artist)), style: (fg: "rgb(214, 119, 81)", modifiers: "Bold") ),
+                                                ( kind: Text(" - "), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") ),
+                                                ( kind: Property(Song(Album)), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") )
+                                            ], align: Center))
+                                        ),
+                                    ])
+                                )
                             ])
-                        )
+                        ),
                     ])
-                ),
+                )
             ])
         ),
         (
