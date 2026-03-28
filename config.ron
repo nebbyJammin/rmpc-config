@@ -2,13 +2,15 @@
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
 (
-    address: "127.0.0.1:6600",
+    address: "/tmp/mpd_socket",
+    cache_dir: Some("/tmp/rmpc/cache"),
+    extra_yt_dlp_args: ["--cookies-from-browser=firefox"],
     password: None,
+
     theme: "catppuccin_mocha",
-    cache_dir: None,
     on_song_change: None,
     volume_step: 5,
-    max_fps: 60,
+    max_fps: 120,
     scrolloff: 0,
     wrap_navigation: false,
     enable_mouse: true,
@@ -37,14 +39,14 @@
             ".":       VolumeUp,
             "<Tab>":   NextTab,
             "<S-Tab>": PreviousTab,
-            "1":       SwitchToTab("Now Playing"),
+            "1":       SwitchToTab("Visualizer"),
             "2":       SwitchToTab("Queue"),
             "3":       SwitchToTab("Directories"),
-            "4":       SwitchToTab("Artists"),
-            "5":       SwitchToTab("Album Artists"),
-            "6":       SwitchToTab("Albums"),
-            "7":       SwitchToTab("Playlists"),
-            "8":       SwitchToTab("Search"),
+            //"4":       SwitchToTab("Artists"),
+            //"5":       SwitchToTab("Album Artists"),
+            //"6":       SwitchToTab("Albums"),
+            "4":       SwitchToTab("Playlists"),
+            "5":       SwitchToTab("Search"),
             "q":       Quit,
             ">":       NextTrack,
             "p":       TogglePause,
@@ -130,9 +132,9 @@
         album_date_tags: [Date],
     ),
     cava: (
-        framerate: 60, // default 60
+        framerate: 120, // default 60
         autosens: false, // default true
-        sensitivity: 10, // default 100
+        sensitivity: 6, // default 100
         lower_cutoff_freq: 50, // not passed to cava if not provided
         higher_cutoff_freq: 10000, // not passed to cava if not provided
         input: (
@@ -153,34 +155,50 @@
     ),
     tabs: [    
         (
-            name: "Now Playing",
-            pane: Split(direction: Vertical, panes: [
+            name: "Visualizer",
+            pane: Split(direction: Vertical, panes: [ 
                 (
                     size: "100%",
-                    borders: "NONE",
-                    pane: Pane(AlbumArt)
+                    pane: Pane(Cava),
                 ),
                 (
-                    size: "4",
+                    size: "8",
                     borders: "ALL",
                     border_title: [(kind: Text(" Now Playing "), style: (fg: "rgb(126, 144, 172)"))],
                     border_title_position: Top,
                     border_title_alignment: Left,
-                    pane: Split(direction: Vertical, panes: [
+                    pane: Split(direction: Horizontal, panes: [
                         (
-                            size: "1",
-                            pane: Pane(Property(content: [
-                                ( kind: Property(Song(Title)), style: (fg: "rgb(235, 213, 121)", modifiers: "Bold") )
-                            ], align: Center))
+                            size: "16",
+                            pane: Pane(AlbumArt),
                         ),
                         (
-                            size: "1",
-                            pane: Pane(Property(content: [
-                                ( kind: Property(Song(Artist)), style: (fg: "rgb(214, 119, 81)", modifiers: "Bold") ),
-                                ( kind: Text(" - "), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") ),
-                                ( kind: Property(Song(Album)), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") )
-                            ], align: Center))
+                            size: "2",
+                            pane: Pane(Property(content: [])),
                         ),
+                        (
+                            size: "100%",
+                            pane: Split(direction: Vertical, panes: [
+                                (
+                                    size: "2",
+                                    pane: Pane(Property(content: [])),
+                                ),
+                                (
+                                    size: "1",
+                                    pane: Pane(Property(content: [
+                                        ( kind: Property(Song(Title)), style: (fg: "rgb(235, 213, 121)", modifiers: "Bold") )
+                                    ], align: Center))
+                                ),
+                                (
+                                    size: "1",
+                                    pane: Pane(Property(content: [
+                                        ( kind: Property(Song(Artist)), style: (fg: "rgb(214, 119, 81)", modifiers: "Bold") ),
+                                        ( kind: Text(" - "), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") ),
+                                        ( kind: Property(Song(Album)), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") )
+                                    ], align: Center))
+                                ),
+                            ])
+                        )
                     ])
                 ),
             ])
@@ -192,23 +210,10 @@
                 panes: [
                     (
                         size: "30%",
-                        pane: Split(
-                            direction: Vertical,
-                            panes: [
-                                (
-                                    size: "50%",
-                                    pane: Pane(AlbumArt)
-                                ),
-                                (
-                                    size: "50%",
-                                    borders: "TOP",
-                                    pane: Pane(Cava),
-                                ),
-                            ],
-                        ),
+                        pane: Pane(AlbumArt)
                     ), 
                     (
-                        size: "70%",
+                        size: "100%",
                         borders: "LEFT",
                         pane: Split(
                             direction: Vertical,
@@ -232,18 +237,18 @@
             name: "Directories",
             pane: Pane(Directories),
         ),
-        (
-            name: "Artists",
-            pane: Pane(Artists),
-        ),
-        (
-            name: "Album Artists",
-            pane: Pane(AlbumArtists),
-        ),
-        (
-            name: "Albums",
-            pane: Pane(Albums),
-        ),
+        // (
+        //    name: "Artists",
+        //    pane: Pane(Artists),
+        // ),
+        // (
+        //    name: "Album Artists",
+        //    pane: Pane(AlbumArtists),
+        //),
+        //(
+        //    name: "Albums",
+        //    pane: Pane(Albums),
+        //),
         (
             name: "Playlists",
             pane: Pane(Playlists),
